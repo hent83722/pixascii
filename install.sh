@@ -1,32 +1,23 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-INSTALL_DIR="$HOME/bin"
-USE_SUDO=false
+# Set variables
+SCRIPT_NAME="pixascii.py"
+INSTALL_DIR="$HOME/.local/bin"
+TARGET="$INSTALL_DIR/pixascii"
 
-# Detect if sudo is available (i.e. on full Linux, not Termux)
-if command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
-    INSTALL_DIR="/usr/local/bin"
-    USE_SUDO=true
-fi
-
-# Make target directory if needed
+# Make sure ~/.local/bin exists
 mkdir -p "$INSTALL_DIR"
 
-# Copy and set executable
-if [ "$USE_SUDO" = true ]; then
-    sudo cp pixascii.py "$INSTALL_DIR/pixascii"
-    sudo chmod +x "$INSTALL_DIR/pixascii"
-else
-    cp pixascii.py "$INSTALL_DIR/pixascii"
-    chmod +x "$INSTALL_DIR/pixascii"
+# Copy the Python script
+cp "$SCRIPT_NAME" "$TARGET"
 
-    # Ensure $HOME/bin is in PATH
-    if ! echo "$PATH" | grep -q "$HOME/bin"; then
-        echo 'export PATH=$HOME/bin:$PATH' >> "$HOME/.bashrc"
-        echo 'export PATH=$HOME/bin:$PATH' >> "$HOME/.zshrc"
-        echo "Added \$HOME/bin to PATH. Restart your terminal or run:"
-        echo "source ~/.bashrc  # or ~/.zshrc"
-    fi
+# Make it executable
+chmod +x "$TARGET"
+
+# Add ~/.local/bin to PATH if not already
+if ! echo "$PATH" | grep -q "$INSTALL_DIR"; then
+    echo 'export PATH=$HOME/.local/bin:$PATH' >> "$HOME/.bashrc"
+    source "$HOME/.bashrc"
 fi
 
-echo "Installed pixascii to $INSTALL_DIR"
+echo "Installation complete! You can now run 'pixascii' from anywhere."
