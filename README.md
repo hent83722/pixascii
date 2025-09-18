@@ -2,7 +2,9 @@
 
 Convert images into ASCII art in your terminal 🎨
 
-## Installation(Termux/Linux support)
+# Termux/Linux 
+
+## Installation
 One-liner install:
 ```bash
 curl -s https://raw.githubusercontent.com/hent83722/pixascii/main/install.sh | bash
@@ -13,4 +15,20 @@ pip install pillow
 ## Usage:
 ```bash
 pixascii /path/to/image/
+```
+
+# Windows
+
+## Installation
+
+```bash
+git clone https://github.com/hent83722/pixascii.git
+pip install pillow
+```
+
+## Usage
+
+```Bash
+cd pixascii
+python pixascii.py path\to\your\image.jpg
 ```
