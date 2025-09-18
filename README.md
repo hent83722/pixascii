@@ -2,6 +2,22 @@
 
 Convert images into ASCII art in your terminal 🎨
 
+# Universal
+
+## Installation
+
+```bash
+git clone https://github.com/hent83722/pixascii.git
+pip install pillow
+```
+
+## Usage
+
+```Bash
+cd pixascii
+python pixascii.py path\to\your\image.jpg
+```
+
 # Termux/Linux 
 
 ## Installation
