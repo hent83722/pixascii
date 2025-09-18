@@ -1,33 +1,32 @@
-#!/usr/bin/env bash
-set -e
+#!/bin/bash
 
-REPO_URL="https://raw.githubusercontent.com/hent83722/pixascii/main"
+INSTALL_DIR="$HOME/bin"
+USE_SUDO=false
 
-echo "[*] Installing pixascii..."
-
-# Detect Termux
-if command -v pkg >/dev/null 2>&1; then
-    echo "[*] Detected Termux"
-    pkg install -y python
-    pip install --user pillow
-    INSTALL_DIR="$HOME/bin"
-else
-    echo "[*] Detected Linux"
-    if command -v pacman >/dev/null 2>&1; then
-        sudo pacman -S --noconfirm python-pillow
-    else
-        python3 -m pip install --user pillow
-    fi
+# Detect if sudo is available (i.e. on full Linux, not Termux)
+if command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
     INSTALL_DIR="/usr/local/bin"
+    USE_SUDO=true
 fi
 
-# Ensure install dir exists
+# Make target directory if needed
 mkdir -p "$INSTALL_DIR"
 
-# Download script
-echo "[*] Downloading pixascii.py..."
-curl -s -L "$REPO_URL/pixascii.py" -o "$INSTALL_DIR/pixascii"
-chmod +x "$INSTALL_DIR/pixascii"
+# Copy and set executable
+if [ "$USE_SUDO" = true ]; then
+    sudo cp pixascii.py "$INSTALL_DIR/pixascii"
+    sudo chmod +x "$INSTALL_DIR/pixascii"
+else
+    cp pixascii.py "$INSTALL_DIR/pixascii"
+    chmod +x "$INSTALL_DIR/pixascii"
 
-echo "[✓] pixascii installed!"
-echo "Run it with: pixascii <path-to-image>"
+    # Ensure $HOME/bin is in PATH
+    if ! echo "$PATH" | grep -q "$HOME/bin"; then
+        echo 'export PATH=$HOME/bin:$PATH' >> "$HOME/.bashrc"
+        echo 'export PATH=$HOME/bin:$PATH' >> "$HOME/.zshrc"
+        echo "Added \$HOME/bin to PATH. Restart your terminal or run:"
+        echo "source ~/.bashrc  # or ~/.zshrc"
+    fi
+fi
+
+echo "Installed pixascii to $INSTALL_DIR"
