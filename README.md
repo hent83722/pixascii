@@ -10,7 +10,7 @@ curl -s https://raw.githubusercontent.com/hent83722/pixascii/main/install.sh | b
 ```bash
 pip install pillow
 ```
-Usage:
+## Usage:
 ```bash
 pixascii /path/to/image/
 ```
